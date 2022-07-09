@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="nav">
       <router-link to="/money">记账</router-link>
       |
       <router-link to="/labels">标签</router-link>
@@ -8,12 +8,15 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    import x from '@/assets/icons/label.vue'
     export default {
-        
+        name:'Nav'
     }
 </script>
 
 <style lang="scss" scoped>
-
+  .nav{
+    border:1px solid red;
+  }
 </style>
