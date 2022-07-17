@@ -4,14 +4,24 @@
             <span class="name">
                 备注
             </span>
-            <input type="text" placeholder="请输入备注">
+            <input type="text"
+            v-model="value"
+            placeholder="请输入备注">
         </label>
     </div>
 </template>
 
 <script lang="ts">
-    export default {
-        name:'Notes'
+    import Vue from 'vue';
+    import {Component, Prop,Watch} from 'vue-property-decorator';
+
+    @Component
+    export default class Notes extends Vue {
+        value = '';
+        @Watch('value')
+        onValueChanged(value:string){
+            this.$emit('update:value',value)
+        }
     }
 </script>
 
