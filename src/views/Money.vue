@@ -1,6 +1,6 @@
 <template>
         <Layout class-prefix="layout">
-            {{record}}
+            {{recordList}}
             <NumberPad @update:value="onUpdateAmount" @submit="saveRecord"/>
             <Types :value.sync="record.type" />
             <Notes @update:value="onUpdateNotes"/>
@@ -16,11 +16,22 @@
     import Tags from '@/components/Money/Tags.vue'
     import {Component, Watch} from 'vue-property-decorator'
 
+    // const version =  window.localStorage.getItem('version') || '0';
+    const recordList:Record[] = JSON.parse(window.localStorage.getItem('recordList')||'[]')
+    //     if (version === '0.0.1') {
+    //         recordList.forEach(record=>{
+    //             record.createdAt = new Date(2022,0,1)
+    //         });
+    //         window.localStorage.setItem('recordList',JSON.stringify(recordList));
+    //     }
+    // window.localStorage.setItem('version','0.0.2')
+
     type Record = {
         tags:string[]
         notes:string
         type:string
         amount:number
+        createdAt?:Date
     }
 
     @Component({
@@ -28,7 +39,7 @@
     })
     export default class Money extends Vue {
         tags = ['衣','食','住','行'];  
-        recordList:Record[] = [];
+        recordList:Record[] = recordList
         record: Record={
             tags:[],notes:'',type:'-',amount:0
         };
@@ -45,8 +56,9 @@
             this.record.amount = parseFloat(value);
         }
         saveRecord(){
-            const record2 = JSON.parse(JSON.stringify(this.record))
-            this.recordList.push(record2)
+            const record2:Record = JSON.parse(JSON.stringify(this.record))
+            record2.createdAt = new Date();
+            this.recordList.push(record2);
             console.log("recordList=>",this.recordList);
         }
         @Watch('recordList')
