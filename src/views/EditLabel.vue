@@ -1,10 +1,14 @@
 <template>
     <Layout>
-        <div>
-            <Icon name="left" />
-            <span>编辑标签</span>
+        <div class="navBar">
+            <Icon class="leftIcon" name="left" />
+            <span class="title">编辑标签</span>
+            <span class="rightIcon"></span>
         </div>
-        <Notes field-name="标签名" placeholder="请输入标签名" />
+        <div class="form-warpper">
+            <FormItem field-name="标签名" placeholder="请输入标签名" />
+        </div>
+        <Button>删除标签</Button>
     </Layout>
 </template>
 
@@ -12,12 +16,11 @@
     import Vue from 'vue';
     import {Component} from 'vue-property-decorator'
     import tagListModel from '@/models/tagListModel';
-    import Notes from '@/components/Money/Notes.vue';
-    
-    
+    import FormItem from '@/components/Money/FormItem.vue';
+    import Button from '@/components/Button.vue';
 
     @Component({
-        components:{Notes}
+        components:{FormItem,Button}
     })
     export default class EditLabel extends Vue{
         created(){
@@ -25,8 +28,6 @@
             tagListModel.fetch();
             const tags = tagListModel.data;
             const tag = tags.filter(tag => tag.id === id)[0];
-            console.log("tags=>",tags);
-            console.log("tag11=>",tag);
             
             if (tag) {
                 console.log("tag=>",tag);
@@ -38,5 +39,28 @@
 </script>
 
 <style lang="scss" scoped>
+    .navBar{
+        text-align: center;
+        font-size: 16px;
+        padding: 12px 16px;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        >.title{
 
+        }
+        >.leftIcon{
+            width: 24px;
+            height: 24px;
+        }
+        >.rightIcon{
+            width: 24px;
+            height: 24px;
+        }
+    }
+    .form-warpper{
+        background: white;
+        margin-top: 8px;
+    }
 </style>
