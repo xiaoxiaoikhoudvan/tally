@@ -1,15 +1,18 @@
 <template>
     <Layout>
         <div class="navBar">
-            <Icon class="leftIcon" name="left" />
+            <Icon class="leftIcon" name="left" @click="goBack"/>
             <span class="title">编辑标签</span>
             <span class="rightIcon"></span>
         </div>
         <div class="form-wrapper">
-            <FormItem :value="tag.name" field-name="标签名" placeholder="请输入标签名" />
+            <FormItems :value="tag.name" 
+                      @update:value = "update"
+                      field-name="标签名" placeholder="请输入标签名" />
         </div>
         <div class="button-wrapper">
-            <Button>删除标签</Button>
+            <!-- <span class="updateBtn"><Button @click="update">修改标签</Button></span> -->
+            <Button @click="remove">删除标签</Button>
         </div>
         
     </Layout>
@@ -19,11 +22,11 @@
     import Vue from 'vue';
     import {Component} from 'vue-property-decorator'
     import tagListModel from '@/models/tagListModel';
-    import FormItem from '@/components/Money/FormItem.vue';
+    import FormItems from '@/components/Money/FormItems.vue';
     import Button from '@/components/Button.vue';
 
     @Component({
-        components:{FormItem,Button}
+        components:{FormItems,Button}
     })
     export default class EditLabel extends Vue{
         tag?:{id:string,name:string} = undefined;
@@ -38,6 +41,25 @@
             }else{
                 this.$router.replace('/404');
             }
+        }
+        update(name:string){
+            console.log("name==>",name);
+            if (this.tag) {
+                tagListModel.update(this.tag.id,name);
+            }
+            
+        }
+        remove(){
+            if (this.tag) {
+                if (tagListModel.remove(this.tag.id)) {
+                    this.$router.back()
+                }else{
+                    window.alert('删除失败');
+                }
+            }
+        }
+        goBack(){
+            this.$router.back()
         }
     }
 </script>
@@ -71,5 +93,11 @@
         text-align: center;
         padding: 16px;
         margin-top: 44-16px;
+        > .updateBtn{
+            margin-right: 44px;
+        }
+        > .removeBtn{
+
+        }
     }
 </style>
