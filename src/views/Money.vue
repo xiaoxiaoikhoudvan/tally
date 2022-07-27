@@ -17,10 +17,9 @@
     import Types from '@/components/Money/Types.vue'
     import FormItems from '@/components/Money/FormItems.vue'
     import Tags from '@/components/Money/Tags.vue'
-    import {Component, Watch} from 'vue-property-decorator'
-    import recordListModel from '@/models/recordListModel'
+    import {Component} from 'vue-property-decorator'
+    import store from '@/store/index2';
     // const version =  window.localStorage.getItem('version') || '0';
-    const recordList = recordListModel.fetch();
     //     if (version === '0.0.1') {
     //         recordList.forEach(record=>{
     //             record.createdAt = new Date(2022,0,1)
@@ -34,8 +33,8 @@
         components:{NumberPad,Types,FormItems,Tags}
     })
     export default class Money extends Vue {
-        tags = window.tagList;  
-        recordList:RecordItem[] = recordList
+        tags = store.tagList;  
+        recordList = store.recordList
         record: RecordItem={
             tags:[],notes:'',type:'-',amount:0
         };
@@ -52,11 +51,7 @@
             this.record.amount = parseFloat(value);
         }
         saveRecord(){
-            recordListModel.create(this.record)
-        }
-        @Watch('recordList')
-        onRecordListChange(){
-            recordListModel.save();
+            store.createRecord(this.record)
         }
     }
 
