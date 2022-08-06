@@ -5,9 +5,9 @@
             <div class="notes">
                 <FormItems fieldName="备注" 
                    placeholder="在这里输入备注"
-                   @update:value="onUpdateNotes"/>
+                   :value.sync = "record.notes"/>
             </div>
-            <Tags/>
+            <Tags @update:value = "record.tags = $event"/>
         </Layout>
 </template>
 
@@ -53,14 +53,22 @@
             this.record.amount = parseFloat(value);
         }
         saveRecord(){
+            if(!this.record.tags || this.record.tags.length === 0){
+               return window.alert('请至少选择一个标签！');
+            }
            this.$store.commit('createRecord',this.record);
+           if(this.$store.state.createRecordError === null){
+                window.alert('保存成功!');
+                this.record.notes = '';
+           } 
+           
         }
     }
 
 </script>
 
 <style lang="scss" scoped>
-    .layout-content{
+    ::v-deep .layout-content{
         display: flex;
         flex-direction: column-reverse;
     }
